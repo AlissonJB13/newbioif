@@ -281,7 +281,7 @@ class _EspeciesState extends State<Especies> {
                 child: TextFormField(
                   maxLines: null,
                   decoration: const InputDecoration(
-                    hintText: "Descrição",
+                    hintText: "Descrição do Animal ou Planta",
                     hintStyle: TextStyle(fontSize: 20),
                   ),
                   controller: _controllerDescricao,
