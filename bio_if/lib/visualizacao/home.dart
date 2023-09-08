@@ -58,7 +58,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   Stream<QuerySnapshot> getDataStream() {
     Query<Map<String, dynamic>> dadosCollection = FirebaseFirestore.instance
         .collection('Postagem2')
-        .orderBy('data e hora', descending: false);
+        .orderBy('nome', descending: true);
 
     return dadosCollection.snapshots();
   }

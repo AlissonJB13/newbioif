@@ -174,6 +174,12 @@ class _EspeciesState extends State<Especies> {
         .child("fotos")
         .child(DateTime.now().millisecondsSinceEpoch.toString());
 
+    if (_arquivoImagem == null) {
+      // Se o arquivo de imagem for nulo, exiba uma mensagem de erro.
+      _exibirStatusAlertDialog("Por favor carregue uma imagem", true, false);
+      return; // Pare o processo aqui.
+    }
+
     UploadTask task = arquivo.putFile(File(_arquivoImagem!.path));
 
     task.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
@@ -199,7 +205,8 @@ class _EspeciesState extends State<Especies> {
   }
 
   Future _recuperarImagem(TaskSnapshot taskSnapshot) async {
-    String url = await taskSnapshot.ref.getDownloadURL();
+    String? url = await taskSnapshot.ref.getDownloadURL();
+
     print("URL: $url");
 
     setState(() {
