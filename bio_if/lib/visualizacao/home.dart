@@ -58,7 +58,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   Stream<QuerySnapshot> getDataStream() {
     Query<Map<String, dynamic>> dadosCollection = FirebaseFirestore.instance
-        .collection('Postagem2')
+        .collection('Postagemteste')
         .orderBy('nome', descending: true);
 
     return dadosCollection.snapshots();
@@ -339,7 +339,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                         // Verifique se o usuário já deu like na publicação
                                                         bool alreadyLiked = await db
                                                             .collection(
-                                                                'Postagem2')
+                                                                'Postagemteste')
                                                             .doc(idPublicacao)
                                                             .collection(
                                                                 'SubLikes')
@@ -353,7 +353,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                           // Adicione um novo documento na subcoleção "comentarios" com o ID do usuário
                                                           await db
                                                               .collection(
-                                                                  'Postagem2')
+                                                                  'Postagemteste')
                                                               .doc(idPublicacao)
                                                               .collection(
                                                                   'SubLikes')
@@ -370,7 +370,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
                                                           await db
                                                               .collection(
-                                                                  'Postagem2')
+                                                                  'Postagemteste')
                                                               .doc(idPublicacao)
                                                               .update({
                                                             'like':
@@ -388,7 +388,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                           }); // Exclua o documento do usuário na subcoleção "comentarios"
                                                           await db
                                                               .collection(
-                                                                  'Postagem2')
+                                                                  'Postagemteste')
                                                               .doc(idPublicacao)
                                                               .collection(
                                                                   'SubLikes')
@@ -398,7 +398,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                           // Atualize a publicação com o novo valor de likes
                                                           await db
                                                               .collection(
-                                                                  'Postagem2')
+                                                                  'Postagemteste')
                                                               .doc(idPublicacao)
                                                               .update({
                                                             'like':
@@ -452,24 +452,22 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                     // Verifique se o usuário está logado antes de permitir que ele coloque ou remova um like
                                                     if (userId != null) {
                                                       // Verifique se o usuário já deu like na publicação
-                                                      bool alreadyLiked =
-                                                          await db
-                                                              .collection(
-                                                                  'Postagem2')
-                                                              .doc(idPublicacao)
-                                                              .collection(
-                                                                  'SubDisLikes')
-                                                              .doc(userId)
-                                                              .get()
-                                                              .then((snapshot) =>
-                                                                  snapshot
-                                                                      .exists);
+                                                      bool alreadyLiked = await db
+                                                          .collection(
+                                                              'Postagemteste')
+                                                          .doc(idPublicacao)
+                                                          .collection(
+                                                              'SubDisLikes')
+                                                          .doc(userId)
+                                                          .get()
+                                                          .then((snapshot) =>
+                                                              snapshot.exists);
 
                                                       if (!alreadyLiked) {
                                                         // Adicione um novo documento na subcoleção "comentarios" com o ID do usuário
                                                         await db
                                                             .collection(
-                                                                'Postagem2')
+                                                                'Postagemteste')
                                                             .doc(idPublicacao)
                                                             .collection(
                                                                 'SubDisLikes')
@@ -486,7 +484,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                         // Atualize a publicação com o novo valor de likes
                                                         await db
                                                             .collection(
-                                                                'Postagem2')
+                                                                'Postagemteste')
                                                             .doc(idPublicacao)
                                                             .update({
                                                           'dislike':
@@ -506,7 +504,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                         // Exclua o documento do usuário na subcoleção "comentarios"
                                                         await db
                                                             .collection(
-                                                                'Postagem2')
+                                                                'Postagemteste')
                                                             .doc(idPublicacao)
                                                             .collection(
                                                                 'SubDisLikes')
@@ -516,7 +514,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                                         // Atualize a publicação com o novo valor de likes
                                                         await db
                                                             .collection(
-                                                                'Postagem2')
+                                                                'Postagemteste')
                                                             .doc(idPublicacao)
                                                             .update({
                                                           'dislike':

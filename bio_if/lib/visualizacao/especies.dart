@@ -259,7 +259,7 @@ class _EspeciesState extends State<Especies> {
         //dislikes: [],
         verificado: false);
 
-    db.collection("Postagem2").add(postagem.toMap());
+    db.collection("Postagemteste").add(postagem.toMap());
   }
 
   @override
