@@ -1,6 +1,7 @@
 import 'dart:async';
 //import 'package:bio_if/visualizacao/bioifpdf.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'sobre.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -59,7 +60,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   Stream<QuerySnapshot> getDataStream() {
     Query<Map<String, dynamic>> dadosCollection = FirebaseFirestore.instance
         .collection('Postagemteste')
-        .orderBy('nome', descending: true);
+        .orderBy('data e hora', descending: true);
 
     return dadosCollection.snapshots();
   }
@@ -290,11 +291,11 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                         ),
                                       ),
                                       Container(
-                                          margin: const EdgeInsets.all(5),
-                                          alignment: Alignment.bottomRight,
-                                          child: Text(
-                                            "${snap[index]['data e hora']}",
-                                          )),
+                                        margin: const EdgeInsets.all(5),
+                                        alignment: Alignment.bottomRight,
+                                        child: Text(
+                                            "${snap[index]['data e hora']}"),
+                                      ),
                                       Container(
                                         margin: const EdgeInsets.all(5),
                                         alignment: Alignment.centerLeft,

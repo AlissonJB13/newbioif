@@ -111,7 +111,7 @@ class _EspeciesState extends State<Especies> {
 
   _formatarData(String data) {
     initializeDateFormatting("pt_BR");
-    var formatador = DateFormat.yMd("pt_BR");
+    var formatador = DateFormat.yMd("pt_BR").add_jms();
 
     DateTime dataConvertida = DateTime.parse(data);
 
