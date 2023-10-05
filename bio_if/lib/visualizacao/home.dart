@@ -1,4 +1,5 @@
 import 'dart:async';
+//import 'package:bio_if/visualizacao/bioifpdf.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'sobre.dart';
@@ -22,7 +23,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   var db = FirebaseFirestore.instance;
   String latlong = "";
-  List<String> itensMenu = ["Sobre", "Ajuda", "Sair"];
+  List<String> itensMenu = ["Sobre", "Ajuda", "Sair", "PDF"];
   int likeCount = 0;
   late final FirebaseFirestore _db;
   final userId = FirebaseAuth.instance.currentUser?.uid;
@@ -102,7 +103,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       case "Ajuda":
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Ajuda()));
-        break;
+      /*case "PDF":
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const BioIfPDF()));
+        break;*/
       case "Sair":
         SystemNavigator.pop();
         break;

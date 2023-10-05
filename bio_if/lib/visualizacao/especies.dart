@@ -47,6 +47,36 @@ class _EspeciesState extends State<Especies> {
   int contagem = 0;
   String nomeUsuario = "";
   bool _isUploading = false;
+  bool _isButtonEnabled = false; // Inicialmente, o botão está desabilitado
+
+  void _checkButtonState() {
+    // Verifica se os campos de texto estão vazios
+    final nomeIsEmpty = _controllerNome.text.isEmpty;
+    final descricaoIsEmpty = _controllerDescricao.text.isEmpty;
+
+    // Atualiza o estado do botão com base na condição
+    setState(() {
+      _isButtonEnabled = !(nomeIsEmpty || descricaoIsEmpty);
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controllerNome.addListener(_checkButtonState);
+    _controllerDescricao.addListener(_checkButtonState);
+  }
+
+  @override
+  void dispose() {
+    // Remove os ouvintes ao encerrar o widget
+    _controllerNome.removeListener(_checkButtonState);
+    _controllerDescricao.removeListener(_checkButtonState);
+    _controllerNome.dispose();
+    _controllerDescricao.dispose();
+    super.dispose();
+  }
 
   Future _capturaFoto(bool daCamera) async {
     final ImagePicker picker = ImagePicker();
@@ -94,21 +124,21 @@ class _EspeciesState extends State<Especies> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Confirmação"),
-          content: Text("Deseja prosseguir com a postagem?"),
+          title: const Text("Confirmação"),
+          content: const Text("Deseja prosseguir com a postagem?"),
           actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Fechar o AlertDialog
+              },
+              child: const Text("Cancelar"),
+            ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // Fechar o AlertDialog
                 _iniciarUpload(); // Iniciar o processo de upload
               },
-              child: Text("Sim"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Fechar o AlertDialog
-              },
-              child: Text("Cancelar"),
+              child: const Text("Sim"),
             ),
           ],
         );
@@ -281,19 +311,39 @@ class _EspeciesState extends State<Especies> {
                 ),
                 controller: _controllerNome,
               ),
-              ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 150,
-                ),
-                child: TextFormField(
-                  maxLines: null,
-                  decoration: const InputDecoration(
-                    hintText: "Descrição do Animal ou Planta",
-                    hintStyle: TextStyle(fontSize: 20),
-                  ),
-                  controller: _controllerDescricao,
-                ),
+              _controllerNome.text.isEmpty
+                  ? const Text("Este campo é obrigatório",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
+                        // Cor vermelha para chamar atenção
+                      ),
+                      textAlign: TextAlign.left)
+                  : const SizedBox(),
+              const SizedBox(
+                height: 10,
               ),
+              TextFormField(
+                maxLines: null,
+                decoration: const InputDecoration(
+                  hintText: "Descrição do Animal ou Planta",
+                  hintStyle: TextStyle(fontSize: 20),
+                ),
+                controller: _controllerDescricao,
+              ),
+              _controllerDescricao.text.isEmpty
+                  ? const Text("Este campo é obrigatório",
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
+                        // Cor vermelha para chamar atenção
+                      ),
+                      textAlign: TextAlign.left)
+                  : const SizedBox(),
+              const SizedBox(
+                height: 10,
+              ),
+
               const SizedBox(
                 height: 30,
               ),
@@ -337,7 +387,7 @@ class _EspeciesState extends State<Especies> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 04, 82, 37),
                   ),
-                  onPressed: _postagem,
+                  onPressed: _isButtonEnabled ? _postagem : null,
                 ),
               ),
               /*Padding(
