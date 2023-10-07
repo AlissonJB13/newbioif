@@ -13,6 +13,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:bio_if/customizacao/apptheme.dart';
 import 'mapa.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 /*cadastro das especies
     -nome conhecido da especies
@@ -47,7 +48,9 @@ class _EspeciesState extends State<Especies> {
   int contagem = 0;
   String nomeUsuario = "";
   bool _isUploading = false;
-  bool _isButtonEnabled = false; // Inicialmente, o botão está desabilitado
+  bool _isButtonEnabled = false;
+  File? _selectedImage;
+  File? _compressedImage; // Inicialmente, o botão está desabilitado
 
   void _checkButtonState() {
     // Verifica se os campos de texto estão vazios
@@ -88,9 +91,20 @@ class _EspeciesState extends State<Especies> {
       imagem = await picker.pickImage(source: ImageSource.gallery);
     }
 
-    setState(() {
-      _arquivoImagem = imagem;
-    });
+    if (imagem != null) {
+      // Comprimir a imagem
+      final compressedImageBytes = await FlutterImageCompress.compressWithFile(
+        imagem.path,
+        minHeight: 400,
+        minWidth: 400,
+        quality: 50, // Defina a qualidade desejada (0-100)
+      );
+
+      setState(() {
+        _arquivoImagem = imagem;
+        _compressedImage = File.fromRawPath(compressedImageBytes!);
+      });
+    }
   }
 
   void _selecao() {
@@ -311,17 +325,8 @@ class _EspeciesState extends State<Especies> {
                 ),
                 controller: _controllerNome,
               ),
-              _controllerNome.text.isEmpty
-                  ? const Text("Este campo é obrigatório",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.red,
-                        // Cor vermelha para chamar atenção
-                      ),
-                      textAlign: TextAlign.left)
-                  : const SizedBox(),
-              const SizedBox(
-                height: 10,
+              SizedBox(
+                height: 30,
               ),
               TextFormField(
                 maxLines: null,
@@ -331,30 +336,20 @@ class _EspeciesState extends State<Especies> {
                 ),
                 controller: _controllerDescricao,
               ),
-              _controllerDescricao.text.isEmpty
-                  ? const Text("Este campo é obrigatório",
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.red,
-                        // Cor vermelha para chamar atenção
-                      ),
-                      textAlign: TextAlign.left)
-                  : const SizedBox(),
-              const SizedBox(
-                height: 10,
+              Container(
+                alignment: Alignment.centerLeft,
+                child: const Padding(
+                  padding: EdgeInsets.only(right: 10, top: 10, bottom: 10),
+                  child: Text(
+                    "* Todos os campos são obrigtórios",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
               ),
-
-              const SizedBox(
-                height: 30,
-              ),
-
-              //Row(children: [
-
               const Text(
                 "Imagem:",
                 style: TextStyle(fontSize: 30),
               ),
-
               _arquivoImagem != null
                   ? Image.file(
                       File(_arquivoImagem!.path),

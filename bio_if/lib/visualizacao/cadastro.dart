@@ -251,7 +251,7 @@ class _CadastroState extends State<Cadastro> {
           ),
           const Padding(
             padding: EdgeInsets.all(10),
-            child: Text("* Todos os campos são obrigatório",
+            child: Text("* Todos os campos são obrigatórios",
                 style: TextStyle(color: Colors.red)),
           ),
           const Padding(padding: EdgeInsets.only(top: 30)),
