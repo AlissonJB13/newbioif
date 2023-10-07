@@ -29,33 +29,46 @@ class _CadastroState extends State<Cadastro> {
   bool senha1 = true;
   bool senha2 = true;
   bool _isLoading = false;
+  bool _isButtonEnabled = false; // Inicialmente, o botão está desabilitado
 
-  /*void _exibirAlertDialog(String mensagem) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Atenção"),
-          content: Text(mensagem),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Fecha o AlertDialog
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Login()), // Navega para a tela de login
-                );
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
-    );
-  }*/
+  void _checkButtonState() {
+    // Verifica se os campos de texto estão vazios
+    final nomeIsEmpty = _controllerNome.text.isEmpty;
+    final emailIsEmpty = _controllerEmail.text.isEmpty;
+    final senhaIsEmpty = _controllerSenha.text.isEmpty;
+    final confirmasenhaIsEmpty = _controllerConfirmaSenha.text.isEmpty;
+
+    // Atualiza o estado do botão com base na condição
+    setState(() {
+      _isButtonEnabled = !(nomeIsEmpty ||
+          emailIsEmpty ||
+          senhaIsEmpty ||
+          confirmasenhaIsEmpty);
+    });
+  }
+
+  @override
+  void initState() {
+    _controllerNome.addListener(_checkButtonState);
+    _controllerSenha.addListener(_checkButtonState);
+    _controllerEmail.addListener(_checkButtonState);
+    _controllerConfirmaSenha.addListener(_checkButtonState);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // Remove os ouvintes ao encerrar o widget
+    _controllerNome.removeListener(_checkButtonState);
+    _controllerEmail.removeListener(_checkButtonState);
+    _controllerSenha.removeListener(_checkButtonState);
+    _controllerConfirmaSenha.removeListener(_checkButtonState);
+    _controllerNome.dispose();
+    _controllerEmail.dispose();
+    _controllerSenha.dispose();
+    _controllerConfirmaSenha.dispose();
+  }
 
   void _exibirAlertDialog(
       String statusMessage, bool showButton, bool showProgress) {
@@ -236,42 +249,23 @@ class _CadastroState extends State<Cadastro> {
                 )),
             style: TextStyle(fontSize: 20),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 40),
-          ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.all(10),
-            child: Text(
-              _status!,
-              style: TextStyle(fontSize: 20),
-              textAlign: TextAlign.center,
-            ),
+            child: Text("* Todos os campos são obrigatório",
+                style: TextStyle(color: Colors.red)),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 40),
-          ),
-          InkWell(
-            onTap: () {
-              _cadastrarUsuario();
-            },
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 04, 82, 37),
-                  borderRadius: BorderRadius.circular(5)),
-              child: Center(
-                child: _isLoading
-                    ? CircularProgressIndicator() // Mostra um indicador de carregamento
-                    : Text(
-                        "Cadastrar",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
+          const Padding(padding: EdgeInsets.only(top: 30)),
+          Container(
+            height: 70,
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.send),
+              label: const Text('Cadastrar', style: TextStyle(fontSize: 25)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 04, 82, 37),
               ),
+              onPressed: _isButtonEnabled ? _cadastrarUsuario : null,
             ),
-          ),
+          )
         ]),
       ),
     );
