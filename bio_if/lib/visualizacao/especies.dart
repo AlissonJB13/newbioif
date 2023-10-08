@@ -86,25 +86,32 @@ class _EspeciesState extends State<Especies> {
     XFile? imagem;
 
     if (daCamera) {
-      imagem = await picker.pickImage(source: ImageSource.camera);
+      imagem = await picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 70,
+          maxHeight: 400,
+          maxWidth: 400);
     } else {
-      imagem = await picker.pickImage(source: ImageSource.gallery);
+      imagem = await picker.pickImage(
+          source: ImageSource.gallery,
+          imageQuality: 70,
+          maxHeight: 400,
+          maxWidth: 400);
     }
 
-    if (imagem != null) {
+    /*if (imagem != null) {
       // Comprimir a imagem
       final compressedImageBytes = await FlutterImageCompress.compressWithFile(
         imagem.path,
         minHeight: 400,
         minWidth: 400,
         quality: 50, // Defina a qualidade desejada (0-100)
-      );
+      );*/
 
-      setState(() {
-        _arquivoImagem = imagem;
-        _compressedImage = File.fromRawPath(compressedImageBytes!);
-      });
-    }
+    setState(() {
+      _arquivoImagem = imagem;
+      //_compressedImage = File.fromRawPath(compressedImageBytes!);
+    });
   }
 
   void _selecao() {
@@ -351,9 +358,14 @@ class _EspeciesState extends State<Especies> {
                 style: TextStyle(fontSize: 30),
               ),
               _arquivoImagem != null
-                  ? Image.file(
-                      File(_arquivoImagem!.path),
-                      fit: BoxFit.cover,
+                  ? Container(
+                      width: 400,
+                      height: 400,
+                      child: Image.file(
+                        File(_arquivoImagem!.path),
+                        width: 400,
+                        height: 400,
+                      ),
                     )
                   : Container(),
               Row(
