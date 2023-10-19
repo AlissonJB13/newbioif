@@ -88,13 +88,13 @@ class _EspeciesState extends State<Especies> {
     if (daCamera) {
       imagem = await picker.pickImage(
           source: ImageSource.camera,
-          imageQuality: 70,
+          imageQuality: 90,
           maxHeight: 400,
           maxWidth: 400);
     } else {
       imagem = await picker.pickImage(
           source: ImageSource.gallery,
-          imageQuality: 70,
+          imageQuality: 90,
           maxHeight: 400,
           maxWidth: 400);
     }
@@ -280,7 +280,7 @@ class _EspeciesState extends State<Especies> {
         //dislikes: [],
         verificado: false);
 
-    db.collection("Postagemteste").add(postagem.toMap());
+    db.collection("Postagem2").add(postagem.toMap());
   }
 
   @override
@@ -348,7 +348,7 @@ class _EspeciesState extends State<Especies> {
                 child: const Padding(
                   padding: EdgeInsets.only(right: 10, top: 10, bottom: 10),
                   child: Text(
-                    "* Todos os campos são obrigtórios",
+                    "* Todos os campos são obrigatórios",
                     style: TextStyle(color: Colors.red),
                   ),
                 ),
