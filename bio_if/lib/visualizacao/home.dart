@@ -289,7 +289,18 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                               );
                                             }
                                           },
-                                        ),
+                                        ), /*
+                                          // pensar em colocar o lazy loading para economizar utilização
+                                          do api e também utilizar o cachednetwork
+                                            CachedNetworkImage(
+                                          imageUrl: snap[index]['foto'],
+                                          placeholder: (context, url) =>
+                                              const CircularProgressIndicator(),
+                                          errorWidget: (context, url, error) =>
+                                              const Icon(Icons.error),
+                                          width: 350,
+                                          height: 300,
+                                        ),*/
                                       ),
                                       Container(
                                         margin: const EdgeInsets.all(5),
